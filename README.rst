@@ -1,6 +1,6 @@
-======
+######
 RegReg
-======
+######
 
 RegReg is a simple multi-algorithm Python framework for prototyping and
 solving regularized regression problems such as the LASSO. The goal is to
@@ -9,8 +9,16 @@ different models and choices of regularization.  In that spirit, the emphasis
 is on the flexibility of the framework instead of computational speed for any
 particular problem, though the speed tradeoff will generally not be too bad.
 
+*******
+Website
+*******
+
+Current documentation for RegReg should be available at `the RegReg website
+<https://regreg.github.io/regreg>`_.
+
+****
 Code
-====
+****
 
 You can find our sources and single-click downloads:
 
@@ -27,8 +35,17 @@ You can find our sources and single-click downloads:
    https://github.com/regreg/regreg/archive/master.zip
 .. _available releases: https://github.com/regreg/regreg/releases
 
+*******
 License
-=======
+*******
 
 regreg is licensed under the terms of the 3-clause BSD license.
 Please see the LICENSE file in the regreg distribution.
+
+*******
+Support
+*******
+
+Please put up issues on the `regreg issue tracker`_.
+
+.. _regreg issue tracker: https://github.com/regreg/regreg/issues
