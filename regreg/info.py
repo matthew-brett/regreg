@@ -44,10 +44,11 @@ flexibility of the framework instead of computational speed for any particular
 problem, though the speed tradeoff will generally not be too bad.
 """
 
-# versions
-NUMPY_MIN_VERSION='1.3'
-SCIPY_MIN_VERSION = '0.5'
-CYTHON_MIN_VERSION = '0.11.1'
+# Minimum versions
+# Check these against requirements.txt and .travis.yml
+NUMPY_MIN_VERSION='1.6.0'
+SCIPY_MIN_VERSION = '0.9'
+CYTHON_MIN_VERSION = '0.18'
 
 NAME                = 'regreg'
 MAINTAINER          = "regreg developers"

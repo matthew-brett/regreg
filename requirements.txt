@@ -1,0 +1,4 @@
+# Check against .travis.yml file and regreg/info.py
+numpy>=1.6.0
+scipy>=0.9
+cython>=0.18
