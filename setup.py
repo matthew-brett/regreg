@@ -99,7 +99,7 @@ def main(**extra_args):
           maintainer=info.MAINTAINER,
           maintainer_email=info.MAINTAINER_EMAIL,
           description=info.DESCRIPTION,
-          long_description=info.LONG_DESCRIPTION,
+          long_description = open('README.rst', 'rt').read(),
           url=info.URL,
           download_url=info.DOWNLOAD_URL,
           license=info.LICENSE,
