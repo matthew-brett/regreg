@@ -55,6 +55,7 @@ _build/
 dist/
 *.egg-info/
 .shelf
+MANIFEST
 
 # Logs and databases #
 ######################
