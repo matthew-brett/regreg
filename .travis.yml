@@ -51,8 +51,8 @@ before_install:
     - python --version # just to check
     # Update to latest pip and wheel for Python 3.5
     - pip install -U pip wheel
-    - retry pip install nose # always
-    - wheelhouse_pip_install $DEPENDS
+    - retry pip install -q nose # always
+    - wheelhouse_pip_install -q $DEPENDS
     - if [ "${COVERAGE}" == "1" ]; then
       pip install coverage;
       pip install coveralls;
