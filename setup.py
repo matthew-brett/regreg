@@ -11,22 +11,10 @@ if os.path.exists('MANIFEST'): os.remove('MANIFEST')
 
 import numpy as np
 
-# Get version and release info, which is all stored in regreg/info.py
-ver_file = os.path.join('regreg', 'info.py')
-# Use exec for compabibility with Python 3
-exec(open(ver_file).read())
-
-# force_setuptools can be set from the setup_egg.py script
-if not 'force_setuptools' in globals():
-    # For some commands, use setuptools
-    if len(set(('develop', 'bdist_egg', 'bdist_rpm', 'bdist', 'bdist_dumb',
-                'bdist_mpkg', 'bdist_wheel', 'install_egg_info', 'egg_info',
-                'easy_install')).intersection(sys.argv)) > 0:
-        force_setuptools = True
-    else:
-        force_setuptools = False
-
-if force_setuptools:
+# For some commands, force use of setuptools
+if len(set(('develop', 'bdist_egg', 'bdist_rpm', 'bdist', 'bdist_dumb',
+            'bdist_mpkg', 'bdist_wheel', 'install_egg_info', 'egg_info',
+            'easy_install')).intersection(sys.argv)) > 0:
     import setuptools
 
 # Import distutils _after_ potential setuptools import above, and after removing
@@ -42,9 +30,8 @@ info = read_vars_from(pjoin('regreg', 'info.py'))
 
 # We may just have imported setuptools, or we may have been exec'd from a
 # setuptools environment like pip
-using_setuptools = 'setuptools' in sys.modules
 extra_setuptools_args = {}
-if using_setuptools:
+if 'setuptools' in sys.modules:
     # Try to preempt setuptools monkeypatching of Extension handling when Pyrex
     # is missing.  Otherwise the monkeypatched Extension will change .pyx
     # filenames to .c filenames, and we probably don't have the .c files.

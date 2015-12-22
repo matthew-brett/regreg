@@ -3,7 +3,10 @@
 # vi: set ft=python sts=4 ts=4 sw=4 et:
 """Wrapper to run setup.py using setuptools."""
 
+import setuptools
+
 if __name__ == '__main__':
-    execfile('setup.py', dict(__name__='__main__',
-                              __file__='setup.py', # needed in setup.py
-                              force_setuptools=True))
+    exec(open('setup.py', 'rt').read(),
+         dict(__name__='__main__',
+              __file__='setup.py', # needed in setup.py
+             ))
