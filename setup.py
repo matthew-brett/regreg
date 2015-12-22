@@ -35,7 +35,7 @@ from distutils.core import setup
 from distutils.extension import Extension
 
 from cythexts import cyproc_exts, get_pyx_sdist
-from setup_helpers import (read_vars_from, SetupDependency, process_deps)
+from setup_helpers import (read_vars_from, SetupDependency)
 
 # Get version and release info, which is all stored in regreg/info.py
 info = read_vars_from(pjoin('regreg', 'info.py'))
@@ -58,7 +58,7 @@ if using_setuptools:
             doc=['Sphinx>=1.0'],
             test=['nose>=0.10.1']))
     # numpy and scipy will get into setup_requires / install_requires via
-    # "process_deps" call below.
+    # SetupDependency.check_fill calls below.
 
 # Define extensions
 EXTS = []
@@ -75,19 +75,16 @@ extbuilder, needs_cython = cyproc_exts(EXTS,
                                        info.CYTHON_MIN_VERSION,
                                        'pyx-stamps')
 
-cython_dep = SetupDependency('Cython', info.CYTHON_MIN_VERSION,
-                             req_type='setup_requires',
-                             heavy=False)
-numpy_dep = SetupDependency('numpy', info.NUMPY_MIN_VERSION,
-                            req_type='setup_requires',
-                            heavy=True)
-scipy_dep = SetupDependency('scipy', info.SCIPY_MIN_VERSION,
-                             req_type='install_requires',
-                             heavy=True)
-
-process_deps((cython_dep,) if needs_cython else () +
-             (numpy_dep, scipy_dep), extra_setuptools_args)
-
+if needs_cython:
+    SetupDependency('Cython', info.CYTHON_MIN_VERSION,
+                    req_type='setup_requires',
+                    heavy=False).check_fill(extra_setuptools_args)
+SetupDependency('numpy', info.NUMPY_MIN_VERSION,
+                req_type='setup_requires',
+                heavy=True).check_fill(extra_setuptools_args)
+SetupDependency('scipy', info.SCIPY_MIN_VERSION,
+                req_type='install_requires',
+                heavy=True).check_fill(extra_setuptools_args)
 
 cmdclass = dict(
     build_ext=extbuilder,

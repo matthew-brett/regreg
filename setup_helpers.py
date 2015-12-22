@@ -73,34 +73,39 @@ class SetupDependency(object):
         self.install_name = (import_name if install_name is None
                              else install_name)
 
+    def check_fill(self, setuptools_kwargs):
+        """ Process this dependency, maybe filling `setuptools_kwargs`
 
-def process_deps(deps, setuptools_kwargs):
-    """ Process dependency tuples in `deps`, filling `extra_setuptools_args`
+        Run checks on this dependency.  If not using setuptools, then raise
+        error for unmet dependencies.  If using setuptools, add missing or
+        not-heavy dependencies to `setuptools_kwargs`.
 
-    Parameters
-    ----------
-    deps : sequence
-        Sequence of instances of :class:`SetupDependency`.
-    setuptools_kwargs : dict
-        Dictionary of setuptools keyword arguments that may be modified
-        in-place while checking dependencies.
-    """
-    using_setuptools = 'setuptools' in sys.modules
-    for dep in deps:
-        found_ver = get_pkg_version(dep.import_name)
-        ver_err_msg = version_error_msg(dep.import_name,
+        A heavy dependency is one that is inconvenient to install
+        automatically, such as numpy or (particularly) scipy, matplotlib.
+
+        Parameters
+        ----------
+        setuptools_kwargs : dict
+            Dictionary of setuptools keyword arguments that may be modified
+            in-place while checking dependencies.
+        """
+        found_ver = get_pkg_version(self.import_name)
+        ver_err_msg = version_error_msg(self.import_name,
                                         found_ver,
-                                        dep.min_ver)
-        if not using_setuptools:
-            if ver_err_msg != None:
+                                        self.min_ver)
+        if not 'setuptools' in sys.modules:
+            # Not using setuptools; raise error for any unmet dependencies
+            if ver_err_msg is not None:
                 raise RuntimeError(ver_err_msg)
-            continue
-        # Using setuptools
-        # Add packages to given section of setup/install_requires
-        if ver_err_msg != None or not dep.heavy:
-            new_req = '{0}>={1}'.format(dep.import_name, dep.min_ver)
-            old_reqs = setuptools_kwargs.get(dep.req_type, [])
-            setuptools_kwargs[dep.req_type] = old_reqs + [new_req]
+            return
+        # Using setuptools; add packages to given section of
+        # setup/install_requires, unless it's a heavy dependency for which we
+        # already have an acceptable importable version.
+        if self.heavy and ver_err_msg:
+            return
+        new_req = '{0}>={1}'.format(self.import_name, self.min_ver)
+        old_reqs = setuptools_kwargs.get(self.req_type, [])
+        setuptools_kwargs[self.req_type] = old_reqs + [new_req]
 
 
 class Bunch(object):
