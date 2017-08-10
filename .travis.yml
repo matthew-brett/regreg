@@ -23,13 +23,6 @@ env:
 python:
     - 3.5
 
-matrix:
-  include:
-    - os: osx
-      osx_image: xcode7.3
-      language: generic
-      env: TRAVIS_PYTHON_VERSION=3.5
-
 before_install:
     - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         source tools/travis_osx_install.sh ;
